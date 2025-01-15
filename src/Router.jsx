@@ -26,7 +26,6 @@ const Router = () => {
   if (!user) {
     return <Auth />;
   }
-  console.log(user.identities[0].identity_data);
   return <App /> ;
 };
 

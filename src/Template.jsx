@@ -1,15 +1,55 @@
-import React, { useState } from 'react';
-import { AppBar, Button, Toolbar, Typography, Drawer, List, ListItem, ListItemText, CssBaseline, Box, IconButton } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { AppBar, Button, Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider } from '@mui/material';
+import { ExitToApp, Menu } from '@mui/icons-material';
+import { supabase } from './utils/supabase';
 
 const drawerWidth = 15;
 
 const Template = ({ children }) => {
   const [open, setOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUserInfo(session?.user.identities[0].identity_data || null);
+    };
+
+    fetchUser();
+
+    const { data } = supabase.auth.onAuthStateChange((_, session) => {
+      setUserInfo(session?.user.identities[0].identity_data || null);
+    });
+
+    return () => {
+      data.subscription.unsubscribe();
+    };
+  }, []);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
+
+  const handleUserMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+    setShowUserMenu(!showUserMenu);
+  }
+
+  const closeUserMenu = () => {
+    setAnchorEl(null);
+    setShowUserMenu(!showUserMenu);
+  }
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.log(`Error: ${error.message}`);
+      } else {
+        console.log('Logged out successfully.');
+      }
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -18,7 +58,7 @@ const Template = ({ children }) => {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton
               color="inherit"
-              aria-label="open drawer"
+              aria-label="open menu"
               edge="start"
               onClick={handleDrawerToggle}
               sx={{ mr: 2 }}
@@ -28,9 +68,38 @@ const Template = ({ children }) => {
           <Typography variant="h5" noWrap>
             React - Supabase Demo
           </Typography>
-          <Typography variant="body" noWrap>
-            User
-          </Typography>
+
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+
+            <Tooltip title="User Profile">
+              <IconButton onClick={handleUserMenu} color="inherit" aria-label="user profile" sx={{ ml: 1 }}>
+                <Box component='img' sx={{ width: '4dvh', height: '4dvh', borderRadius: '50%' }} src={ userInfo.picture ?? 'user2.svg' } />
+              </IconButton>
+            </Tooltip>
+
+            <Popover
+              open={showUserMenu}
+              anchorEl={anchorEl}
+              onClose={closeUserMenu}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+            >
+              {userInfo.name && <Typography sx={{ px: 3, pt: 2 }}>{userInfo.name}</Typography>}
+              <Typography sx={{ px: 3, py: 2 }}>{userInfo.email}</Typography>
+              <Divider />
+              <IconButton
+                color="inherit"
+                aria-label="logout"
+                onClick={handleLogout}
+                sx={{ p: 2 }}
+                >
+                <ExitToApp /> <Typography sx={{ ml: 2 }} >Logout</Typography>
+              </IconButton>
+            </Popover>
+          </Stack>
+
         </Toolbar>
       </AppBar>
       <Drawer
