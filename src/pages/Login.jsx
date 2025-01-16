@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
-import { supabase } from './utils/supabase';
+import { supabase } from '../utils/supabase';
 import { Box, Button, Divider, Icon, Paper, Stack, TextField, Typography } from '@mui/material';
 import { Google, TableBarRounded } from '@mui/icons-material';
 
-const Auth = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-
-  const handleSignUp = async () => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-    if (error) {
-      setMessage(`Error: ${error.message}`);
-    } else {
-      setMessage('Sign-up successful! Please check your email to confirm.');
-    }
-  };
 
   // Sign in with Email and Password
   const handleSignIn = async () => {
@@ -40,16 +28,6 @@ const Auth = () => {
     });
     if (error) {
       setMessage(`Error: ${error.message}`);
-    }
-  };
-
-  // Log out
-  const handleLogOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      setMessage(`Error: ${error.message}`);
-    } else {
-      setMessage('Logged out successfully.');
     }
   };
 
@@ -103,14 +81,6 @@ const Auth = () => {
             Sign In
           </Button>
 
-          {/* <Typography variant='body'>Don't have an account? 
-            <Button color='primary' onClick={handleSignUp}
-              sx={{ textTransform: 'none', fontSize: 16 }}
-              >
-              Sign Up
-            </Button>
-          </Typography> */}
-
           {message && <Typography color='red' >{message}</Typography>}
         </Box>
       </Paper>
@@ -118,4 +88,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Login;

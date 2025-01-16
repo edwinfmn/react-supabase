@@ -1,17 +1,18 @@
 import { useState, useEffect, Fragment } from 'react'
-import './App.css'
-import Template from './Template';
-import { supabase } from './utils/supabase';
-import { Box, Grid2, Typography } from '@mui/material';
+import './Products.css'
+import Template from '../ui/Template';
+import { supabase } from '../utils/supabase';
+import { Box, Button, Grid2, Stack, Typography } from '@mui/material';
+import { Edit } from '@mui/icons-material';
 
-function App() {
+function Products() {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
     getProducts();
   }, [])
 
-  const getProducts = async() => {
+  const getProducts = async () => {
     const { data } = await supabase.from('product').select()
 
     if (data.length > 0) {
@@ -22,20 +23,24 @@ function App() {
   return (
     <Template>
       <Box sx={{ p: 4 }}>
-        <Typography variant='h3' sx={{ pb: 3 }}>
-          Lista de Productos
-        </Typography>
-        <Grid2 container spacing={1} width={'100%'} 
-            sx={{ '--Grid-borderWidth': '1px',
-              borderTop: 'var(--Grid-borderWidth) solid',
-              borderLeft: 'var(--Grid-borderWidth) solid',
+        <Stack direction='row' spacing={2} sx={{ pb: 3, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant='h4'>
+            Lista de Productos
+          </Typography>
+          <Button variant='contained' color='success' > <Edit sx={{ height: '2dvh', width: '2dvh', mr: 1 }} />New</Button>
+        </Stack>
+        <Grid2 container spacing={1} width={'100%'}
+          sx={{
+            '--Grid-borderWidth': '1px',
+            borderTop: 'var(--Grid-borderWidth) solid',
+            borderLeft: 'var(--Grid-borderWidth) solid',
+            borderColor: 'divider',
+            '& > div': {
+              borderRight: 'var(--Grid-borderWidth) solid',
+              borderBottom: 'var(--Grid-borderWidth) solid',
               borderColor: 'divider',
-              '& > div': {
-                borderRight: 'var(--Grid-borderWidth) solid',
-                borderBottom: 'var(--Grid-borderWidth) solid',
-                borderColor: 'divider',
-              }, 
-            }} >
+            },
+          }} >
           <Grid2 size={1} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Código</Typography></Grid2>
           <Grid2 size={3} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Producto</Typography></Grid2>
           <Grid2 size={4} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Descripción</Typography></Grid2>
@@ -59,4 +64,4 @@ function App() {
   )
 }
 
-export default App
+export default Products

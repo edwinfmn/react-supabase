@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Button, Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider } from '@mui/material';
-import { ExitToApp, Menu } from '@mui/icons-material';
-import { supabase } from './utils/supabase';
+import { Assignment, AssignmentInd, ExitToApp, Menu } from '@mui/icons-material';
+import { supabase } from '../utils/supabase';
+import useAuth from '../hooks/useAuth';
 
 const drawerWidth = 15;
 
@@ -9,24 +10,12 @@ const Template = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUserInfo(session?.user.identities[0].identity_data || null);
-    };
+  const {user, loading} = useAuth();
 
-    fetchUser();
-
-    const { data } = supabase.auth.onAuthStateChange((_, session) => {
-      setUserInfo(session?.user.identities[0].identity_data || null);
-    });
-
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
+  if(loading) {
+    return <div>Loading...</div>
+  }
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -73,7 +62,12 @@ const Template = ({ children }) => {
 
             <Tooltip title="User Profile">
               <IconButton onClick={handleUserMenu} color="inherit" aria-label="user profile" sx={{ ml: 1 }}>
-                <Box component='img' sx={{ width: '4dvh', height: '4dvh', borderRadius: '50%' }} src={ userInfo.picture ?? 'user2.svg' } />
+                {
+                  user.picture ?
+                  <Box component='img' sx={{ width: '4dvh', height: '4dvh', borderRadius: '50%' }} src={ user.picture } />
+                  :
+                  <AssignmentInd color='inherit' sx={{ width: '4dvh', height: '4dvh' }} />
+                }
               </IconButton>
             </Tooltip>
 
@@ -86,8 +80,8 @@ const Template = ({ children }) => {
                 horizontal: 'left',
               }}
             >
-              {userInfo.name && <Typography sx={{ px: 3, pt: 2 }}>{userInfo.name}</Typography>}
-              <Typography sx={{ px: 3, py: 2 }}>{userInfo.email}</Typography>
+              {user.name && <Typography sx={{ px: 3, pt: 2 }}>{user.name}</Typography>}
+              <Typography sx={{ px: 3, py: 2 }}>{user.email}</Typography>
               <Divider />
               <IconButton
                 color="inherit"
@@ -104,7 +98,7 @@ const Template = ({ children }) => {
       </AppBar>
       <Drawer
         open={open}
-        variant="persistent"
+        variant='persistent'
         sx={{
           marginTop: '6dvh',
           flexShrink: 0,

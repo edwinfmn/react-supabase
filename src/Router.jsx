@@ -1,32 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from './utils/supabase';
-import Auth from './Auth';
-import App from './App';
+import React from 'react';
+import Login from './pages/Login';
+import Products from './pages/Products';
+import useAuth from './hooks/useAuth';
 
 const Router = () => {
-  const [user, setUser] = useState(null);
+  const {user, loading} = useAuth();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-    };
-
-    fetchUser();
-
-    const { data } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
+  if(loading) {
+    return <div>Loading...</div>
+  }
 
   if (!user) {
-    return <Auth />;
+    return <Login />;
   }
-  return <App /> ;
+  return <Products /> ;
 };
 
 export default Router;
