@@ -1,9 +1,10 @@
 import React from 'react';
 import Login from './pages/Login';
-import Products from './pages/Products';
 import useAuth from './hooks/useAuth';
+import Template from './ui/Template';
+import Home from './pages/Home';
 
-const Router = () => {
+const Router = ({ children }) => {
   const {user, loading} = useAuth();
 
   if(loading) {
@@ -13,7 +14,7 @@ const Router = () => {
   if (!user) {
     return <Login />;
   }
-  return <Products /> ;
+  return <Template><Home /></Template>;
 };
 
 export default Router;
