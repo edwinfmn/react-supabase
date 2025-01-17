@@ -1,8 +1,9 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect } from 'react'
 import './Products.css'
 import { supabase } from '../utils/supabase';
-import { Box, Button, Grid2, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { Edit } from '@mui/icons-material';
+import { DataGrid } from '@mui/x-data-grid';
 
 function Products() {
   const [products, setProducts] = useState([])
@@ -15,9 +16,18 @@ function Products() {
     const { data } = await supabase.from('product').select()
 
     if (data.length > 0) {
-      setProducts(data)
+      setProducts(data);
     }
   }
+
+  const columns = [
+    { field: 'id', headerName: 'ID' },
+    { field: 'name', headerName: 'Name', flex: 0.5 },
+    { field: 'description', headerName: 'Description', flex: 1 },
+    { field: 'price', headerName: 'Price' },
+    { field: 'size', headerName: 'Size' },
+    { field: 'target', headerName: 'Category' },
+  ];
 
   return (
     <Box sx={{ p: 4 }}>
@@ -27,36 +37,7 @@ function Products() {
         </Typography>
         <Button variant='contained' color='success' > <Edit sx={{ height: '2dvh', width: '2dvh', mr: 1 }} />New</Button>
       </Stack>
-      <Grid2 container spacing={1} width={'100%'}
-        sx={{
-          '--Grid-borderWidth': '1px',
-          borderTop: 'var(--Grid-borderWidth) solid',
-          borderLeft: 'var(--Grid-borderWidth) solid',
-          borderColor: 'divider',
-          '& > div': {
-            borderRight: 'var(--Grid-borderWidth) solid',
-            borderBottom: 'var(--Grid-borderWidth) solid',
-            borderColor: 'divider',
-          },
-        }} >
-        <Grid2 size={1} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Código</Typography></Grid2>
-        <Grid2 size={3} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Producto</Typography></Grid2>
-        <Grid2 size={4} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Descripción</Typography></Grid2>
-        <Grid2 size={1} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Precio</Typography></Grid2>
-        <Grid2 size={1} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Talla</Typography></Grid2>
-        <Grid2 size={2} sx={{ px: 1 }}><Typography fontWeight={'bold'}>Categoría</Typography></Grid2>
-        {products.map((prod) => (
-          <Fragment key={prod.id}>
-            <Grid2 size={1} sx={{ px: 1 }}>{prod.id}</Grid2>
-            <Grid2 size={3} sx={{ px: 1 }}>{prod.name}</Grid2>
-            <Grid2 size={4} sx={{ px: 1 }}>{prod.description}</Grid2>
-            <Grid2 size={1} sx={{ px: 1 }}>$ {prod.price}</Grid2>
-            <Grid2 size={1} sx={{ px: 1 }}>{prod.size}</Grid2>
-            <Grid2 size={2} sx={{ px: 1 }}>{prod.target}</Grid2>
-          </Fragment>
-        ))
-        }
-      </Grid2>
+      <DataGrid rows={products} columns={columns} />
     </Box>
   )
 }
