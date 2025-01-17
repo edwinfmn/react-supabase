@@ -32,12 +32,14 @@ function Products() {
   return (
     <Box sx={{ p: 4 }}>
       <Stack direction='row' spacing={2} sx={{ pb: 3, display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant='h4'>
-          Lista de Productos
-        </Typography>
-        <Button variant='contained' color='success' > <Edit sx={{ height: '2dvh', width: '2dvh', mr: 1 }} />New</Button>
+        <Stack direction='column'>
+          <Typography variant='h5' fontWeight='bold' >Products</Typography>
+          <Typography variant='body'>Manage the products of your warehouse.</Typography>
+        </Stack>
+        <Button variant='outlined' color='success' size='small' sx={{ m: 1 }} > <Edit sx={{ height: '2dvh', width: '2dvh', mr: 1 }} />Add New</Button>
       </Stack>
-      <DataGrid rows={products} columns={columns} />
+
+      <DataGrid rowCount={10} rows={products} columns={columns} />
     </Box>
   )
 }

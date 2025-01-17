@@ -130,7 +130,7 @@ const Template = ({ children }) => {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', ml: open ? `${drawerWidth}dvw` : 0, p: 3, marginTop: '8vh' }}
+        sx={{ flexGrow: 1, bgcolor: 'background.default', ml: open ? `${drawerWidth}dvw` : 0, width: open ? `${100 - drawerWidth}dvw` : '100dvw', p: 3, marginTop: '6vh' }}
       >
         {children}
       </Box>
