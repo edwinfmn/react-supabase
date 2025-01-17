@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { AppBar, Button, Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider } from '@mui/material';
-import { Assignment, AssignmentInd, ExitToApp, Menu } from '@mui/icons-material';
+import React, { Fragment, useState } from 'react';
+import { AppBar,  Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider, MenuItem } from '@mui/material';
+import { AssignmentInd, ExitToApp, Home, Inventory, Logout, Menu, Settings } from '@mui/icons-material';
 import { supabase } from '../utils/supabase';
 import useAuth from '../hooks/useAuth';
+import {  useNavigate } from 'react-router';
 
 const drawerWidth = 15;
 
@@ -12,6 +13,7 @@ const Template = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const {user, loading} = useAuth();
+  const navigate = useNavigate();
 
   if(loading) {
     return <div>Loading...</div>
@@ -105,11 +107,25 @@ const Template = ({ children }) => {
           [`& .MuiDrawer-paper`]: { width: `${drawerWidth}dvw`, boxSizing: 'border-box' },
         }}
       >
-        <Box sx={{ overflow: 'auto', mt: '7dvh' }}>
-          <Button variant='text' size='large' fullWidth>
-            <Typography>Menu Option 1</Typography>
-          </Button>
-          
+        <Box sx={{ overflow: 'auto', mt: '7dvh', height: '90dvh', pt: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Box>
+            <MenuItem onClick={ () => navigate('/dashboard') } >
+              <Home sx={{ mr: 1 }} />Home
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={ () => navigate('/products') } >
+              <Inventory sx={{ mr: 1 }} />Products
+            </MenuItem>
+          </Box>
+          <Box>
+            <Divider />
+            <MenuItem onClick={ () => navigate('/dashboard') } >
+              <Settings sx={{ mr: 1 }} />Settings
+            </MenuItem>
+            <MenuItem onClick={ handleLogout } >
+              <Logout sx={{ mr: 1 }} />Logout
+            </MenuItem>
+          </Box>
         </Box>
       </Drawer>
       <Box
