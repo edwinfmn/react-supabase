@@ -4,9 +4,11 @@ import { supabase } from '../utils/supabase';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router';
 
 function Products() {
   const [products, setProducts] = useState([])
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProducts();
@@ -16,7 +18,7 @@ function Products() {
     const { data } = await supabase.from('product').select()
 
     if (data.length > 0) {
-      setProducts(data);
+      setProducts(data.concat(data.map(p => p.id = p.id*Math.random().toFixed(0))));
     }
   }
 
@@ -36,10 +38,17 @@ function Products() {
           <Typography variant='h5' fontWeight='bold' >Products</Typography>
           <Typography variant='body'>Manage the products of your warehouse.</Typography>
         </Stack>
-        <Button variant='outlined' color='success' size='small' sx={{ m: 1 }} > <Edit sx={{ height: '2dvh', width: '2dvh', mr: 1 }} />Add New</Button>
+        <Button variant='contained' color='success' onClick={ () => navigate('/products/new') } > <Edit sx={{ mr: 1 }} />Add New</Button>
       </Stack>
 
-      <DataGrid rowCount={10} rows={products} columns={columns} />
+      <DataGrid
+        rows={products}
+        columns={columns}
+        autoPageSize
+        columnHeaderHeight={36}
+        rowHeight={36}
+        sx={{ '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 'bold' } }} 
+      />
     </Box>
   )
 }

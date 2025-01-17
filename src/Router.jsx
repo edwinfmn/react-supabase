@@ -2,15 +2,16 @@ import React from 'react';
 import Login from './pages/Login';
 import useAuth from './hooks/useAuth';
 import Home from './pages/Home';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes, Outlet } from 'react-router-dom';
 import Products from './pages/Products';
+import NewProduct from './pages/NewProduct';
 import Template from './ui/Template';
 
-const ProtectedRoute = ({ element, user }) => {
+const ProtectedRoute = ({ user }) => {
   if (!user) {
     return <Navigate to="/login" />;
   }
-  return <Template>{ element }</Template>;
+  return <Template> <Outlet /> </Template>;
 };
 
 const AppRouter = () => {
@@ -24,15 +25,12 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        
-        <Route
-          path="/dashboard"
-          element={<ProtectedRoute user={user} element={<Home />} />}
-        />
-        <Route
-          path="/products"
-          element={<ProtectedRoute user={user} element={<Products />} />}
-        />
+
+        <Route element={<ProtectedRoute user={user} />}>
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/new" element={<NewProduct />} />
+        </Route>
         
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
