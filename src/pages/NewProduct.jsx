@@ -62,54 +62,58 @@ const NewProduct = () => {
         </Stack>
       </Stack>
 
-      <form noValidate autoComplete="off" >
-        <TextField
-          {...register('name')}
-          label="Product Name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          error={!!errors.name}
-          helperText={errors.name?.message}
-        />
-        <TextField
-          {...register('description')}
-          label="Product Description"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          error={!!errors.description}
-          helperText={errors.description?.message}
-        />
-        <TextField
-          {...register('size')}
-          label="Size"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          error={!!errors.size}
-          helperText={errors.size?.message}
-        />
-        <TextField
-          {...register('price')}
-          label="Price"
-          variant='outlined'
-          fullWidth type='number'
-          margin="normal"
-          error={!!errors.price}
-          helperText={errors.price?.message}
-        />
-        <TextField
-          {...register('target')}
-          label="Category"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          error={!!errors.target}
-          helperText={errors.target?.message}
-        />
-        
-      </form>
+      <Box sx={{ display: 'flex', justifyContent: 'center', px: 30 }} >
+        <form noValidate autoComplete="off" >
+          <TextField
+            {...register('name')}
+            label="Product Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
+          <TextField
+            {...register('description')}
+            label="Product Description"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={!!errors.description}
+            helperText={errors.description?.message}
+          />
+          <Stack direction='row' spacing={2} marginTop={1} >
+            <TextField
+              {...register('size')}
+              label="Size"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              error={!!errors.size}
+              helperText={errors.size?.message}
+            />
+            <TextField
+              {...register('price')}
+              label="Price"
+              variant='outlined'
+              fullWidth type='number'
+              margin="normal"
+              error={!!errors.price}
+              helperText={errors.price?.message}
+            />
+          </Stack>
+          <TextField
+            {...register('target')}
+            label="Category"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={!!errors.target}
+            helperText={errors.target?.message}
+          />
+          
+        </form>
+      </Box>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
