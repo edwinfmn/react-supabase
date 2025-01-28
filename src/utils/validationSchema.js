@@ -15,7 +15,7 @@ export const productSchema = Yup.object().shape({
   price: Yup.number()
     .required('Price is required')
     .positive('Price must be a positive number')
-    .transform((value, originalValue) => originalValue === '' ? undefined : +value.toFixed(2) ),
+    .transform((value, originalValue) => originalValue === '' ? undefined : +value.toFixed(2)),
   target: Yup.string()
     .required('Category is required'),
   image: Yup.string()

@@ -14,9 +14,9 @@ const ProtectedRoute = ({ user }) => {
 };
 
 const AppRouter = () => {
-  const {user, loading} = useAuth();
+  const { user, loading } = useAuth();
 
-  if(loading) {
+  if (loading) {
     return <div>Loading...</div>
   }
 
@@ -29,7 +29,7 @@ const AppRouter = () => {
           <Route path="/dashboard" element={<Home />} />
           <Route path="/products" element={<Products />} />
         </Route>
-        
+
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
       </Routes>

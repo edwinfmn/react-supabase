@@ -33,27 +33,28 @@ const Products = () => {
     { field: 'size', headerName: 'Size', editable: true },
     { field: 'color', headerName: 'Color', editable: true },
     { field: 'target', headerName: 'Category', editable: true },
-    { field: 'image', 
+    {
+      field: 'image',
       headerName: 'Image',
       renderCell: (params) => <ImageCell params={params} />,
-     },
+    },
   ];
 
   const handleRowEditStop = async (params, event) => {
     console.log('params', params);
     console.log('event', event);
-  
+
     if (params.reason === GridRowEditStopReasons.escapeKeyDown) {
       event.defaultMuiPrevented = true; // Prevent the default discard behavior
       const editedRow = apiRef.current.getRow(params.id);
-  
+
       // Optionally confirm with the user (if needed)
       const result = await confirm({
         description: 'Do you want to save the changes before leaving?',
         cancellationText: 'No',
         confirmationText: 'Yes',
       }).catch(() => null);
-  
+
       if (result) {
         console.log('Saving changes:', editedRow);
         // Manually trigger save logic for the edited row
@@ -64,8 +65,8 @@ const Products = () => {
     }
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       confirm({ description: 'Are you sure you want to save your changes?' })
-        .then( () => event.defaultMuiPrevented = true )
-        .catch( () => {} );
+        .then(() => event.defaultMuiPrevented = true)
+        .catch(() => { });
     }
   };
 
@@ -151,7 +152,7 @@ const Products = () => {
           <Typography variant='h5' fontWeight='bold' >Products</Typography>
           <Typography variant='body'>Manage the products of your warehouse.</Typography>
         </Stack>
-        <Button variant='text' color='success' onClick={ handleNew } > <Edit sx={{ mr: 1 }} />
+        <Button variant='text' color='success' onClick={handleNew} > <Edit sx={{ mr: 1 }} />
           Add New
         </Button>
       </Stack>
@@ -167,10 +168,10 @@ const Products = () => {
         columnHeaderHeight={36}
         rowHeight={36}
         editMode='row'
-        onRowEditStop={ handleRowEditStop }
-        processRowUpdate={ (newRow, oldRow) => handleProductUpdate(newRow, oldRow) }
-        onProcessRowUpdateError={ (error) => console.error('Error updating product:', error) }
-        sx={{ '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 'bold' } }} 
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={(newRow, oldRow) => handleProductUpdate(newRow, oldRow)}
+        onProcessRowUpdateError={(error) => console.error('Error updating product:', error)}
+        sx={{ '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 'bold' } }}
       />
 
       <ProductModal open={open} handleClose={() => setOpen(false)} />
@@ -178,7 +179,7 @@ const Products = () => {
   )
 }
 
-const ImageCell = ({params}) => {
+const ImageCell = ({ params }) => {
   const [signedUrl, setSignedUrl] = useState('');
 
   useEffect(() => {
@@ -191,16 +192,16 @@ const ImageCell = ({params}) => {
 
     getSignedUrl();
   }, [params.value])
-  
+
   return (
-    (signedUrl !== '') ? 
+    (signedUrl !== '') ?
       <Box
         component={'img'}
         alt={params.value}
         src={signedUrl || ''}
         sx={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 1 }}
-        /> 
-      : 
+      />
+      :
       <></>
   )
 }

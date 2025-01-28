@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import { AppBar,  Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider, MenuItem } from '@mui/material';
 import { AssignmentInd, ExitToApp, Home, Inventory, Logout, Menu, Settings } from '@mui/icons-material';
 import { supabase } from '../utils/supabase';
 import useAuth from '../hooks/useAuth';
-import {  useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const drawerWidth = 15;
 
@@ -12,10 +12,10 @@ const Template = ({ children }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const {user, loading} = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  if(loading) {
+  if (loading) {
     return <div>Loading...</div>
   }
 
@@ -35,11 +35,11 @@ const Template = ({ children }) => {
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.log(`Error: ${error.message}`);
-      } else {
-        console.log('Logged out successfully.');
-      }
+    if (error) {
+      console.log(`Error: ${error.message}`);
+    } else {
+      console.log('Logged out successfully.');
+    }
   }
 
   return (
@@ -48,13 +48,13 @@ const Template = ({ children }) => {
       <AppBar position="fixed" sx={{ height: '6dvh', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton
-              color="inherit"
-              aria-label="open menu"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
-              <Menu />
+            color="inherit"
+            aria-label="open menu"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 }}
+          >
+            <Menu />
           </IconButton>
           <Typography variant="h5" noWrap>
             React - Supabase Demo
@@ -66,9 +66,9 @@ const Template = ({ children }) => {
               <IconButton onClick={handleUserMenu} color="inherit" aria-label="user profile" sx={{ ml: 1 }}>
                 {
                   user.picture ?
-                  <Box component='img' sx={{ width: '4dvh', height: '4dvh', borderRadius: '50%' }} src={ user.picture } />
-                  :
-                  <AssignmentInd color='inherit' sx={{ width: '4dvh', height: '4dvh' }} />
+                    <Box component='img' sx={{ width: '4dvh', height: '4dvh', borderRadius: '50%' }} src={user.picture} />
+                    :
+                    <AssignmentInd color='inherit' sx={{ width: '4dvh', height: '4dvh' }} />
                 }
               </IconButton>
             </Tooltip>
@@ -90,7 +90,7 @@ const Template = ({ children }) => {
                 aria-label="logout"
                 onClick={handleLogout}
                 sx={{ p: 2 }}
-                >
+              >
                 <ExitToApp /> <Typography sx={{ ml: 2 }} >Logout</Typography>
               </IconButton>
             </Popover>
@@ -109,20 +109,20 @@ const Template = ({ children }) => {
       >
         <Box sx={{ overflow: 'auto', mt: '7dvh', height: '90dvh', pt: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <Box>
-            <MenuItem onClick={ () => navigate('/dashboard') } >
+            <MenuItem onClick={() => navigate('/dashboard')} >
               <Home sx={{ mr: 1 }} />Home
             </MenuItem>
             <Divider />
-            <MenuItem onClick={ () => navigate('/products') } >
+            <MenuItem onClick={() => navigate('/products')} >
               <Inventory sx={{ mr: 1 }} />Products
             </MenuItem>
           </Box>
           <Box>
             <Divider />
-            <MenuItem onClick={ () => navigate('/dashboard') } >
+            <MenuItem onClick={() => navigate('/dashboard')} >
               <Settings sx={{ mr: 1 }} />Settings
             </MenuItem>
-            <MenuItem onClick={ handleLogout } >
+            <MenuItem onClick={handleLogout} >
               <Logout sx={{ mr: 1 }} />Logout
             </MenuItem>
           </Box>
