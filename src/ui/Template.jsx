@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Drawer, CssBaseline, Box, IconButton, Stack, Tooltip, Popover, Divider, MenuItem } from '@mui/material';
-import { AssignmentInd, ExitToApp, Home, Inventory, Logout, Menu, Settings } from '@mui/icons-material';
+import { AssignmentInd, BusinessOutlined, ExitToApp, Home, InventoryOutlined, LogoutOutlined, Menu, PlumbingOutlined, WarehouseOutlined } from '@mui/icons-material';
 import { supabase } from '../utils/supabase';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
@@ -82,16 +82,16 @@ const Template = ({ children }) => {
                 horizontal: 'left',
               }}
             >
-              {user.name && <Typography sx={{ px: 3, pt: 2 }}>{user.name}</Typography>}
-              <Typography sx={{ px: 3, py: 2 }}>{user.email}</Typography>
+              {user.name && <Typography variant='body2' sx={{ px: 2, pt: 1 }}>{user.name}</Typography>}
+              <Typography variant='body2' sx={{ px: 2, py: 1 }}>{user.email}</Typography>
               <Divider />
               <IconButton
                 color="inherit"
                 aria-label="logout"
                 onClick={handleLogout}
-                sx={{ p: 2 }}
+                sx={{ px: 2 }}
               >
-                <ExitToApp /> <Typography sx={{ ml: 2 }} >Logout</Typography>
+                <LogoutOutlined /> <Typography variant='body2' sx={{ ml: 1 }} >Logout</Typography>
               </IconButton>
             </Popover>
           </Stack>
@@ -113,17 +113,23 @@ const Template = ({ children }) => {
               <Home sx={{ mr: 1 }} />Home
             </MenuItem>
             <Divider />
+            <MenuItem onClick={() => navigate('/company')} >
+              <BusinessOutlined sx={{ mr: 1 }} />Company
+            </MenuItem>
             <MenuItem onClick={() => navigate('/products')} >
-              <Inventory sx={{ mr: 1 }} />Products
+              <WarehouseOutlined sx={{ mr: 1 }} />Products
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/inventory')} >
+              <InventoryOutlined sx={{ mr: 1 }} />Inventory
             </MenuItem>
           </Box>
           <Box>
             <Divider />
-            <MenuItem onClick={() => navigate('/dashboard')} >
-              <Settings sx={{ mr: 1 }} />Settings
+            <MenuItem onClick={() => navigate('/company')} >
+              <PlumbingOutlined sx={{ mr: 1 }} />Settings
             </MenuItem>
             <MenuItem onClick={handleLogout} >
-              <Logout sx={{ mr: 1 }} />Logout
+              <LogoutOutlined sx={{ mr: 1 }} />Logout
             </MenuItem>
           </Box>
         </Box>

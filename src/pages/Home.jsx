@@ -24,7 +24,7 @@ const Home = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Paper style={{ padding: '20px', textAlign: 'center' }}>
+          <Paper style={{ padding: '20px', textAlign: 'center' }} >
             <InventoryIcon style={{ fontSize: '50px' }} />
             <Typography variant="h6">Products: 50</Typography>
           </Paper>

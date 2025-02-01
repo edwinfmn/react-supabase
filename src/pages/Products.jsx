@@ -7,11 +7,13 @@ import { GridRowEditStopReasons, DataGrid, useGridApiRef } from '@mui/x-data-gri
 import { productSchema } from '../utils/validationSchema';
 import ProductModal from './ProductModal';
 import { toast, Toaster } from 'sonner';
+import { useConfirm } from 'material-ui-confirm';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const apiRef = useGridApiRef();
+  const confirm = useConfirm();
 
   useEffect(() => {
     getProducts();
@@ -142,7 +144,7 @@ const Products = () => {
         console.error('Error updating product:', error.message);
       }
     }
-  }
+  };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -167,6 +169,7 @@ const Products = () => {
         apiRef={apiRef}
         columnHeaderHeight={36}
         rowHeight={36}
+        pageSize={10}
         editMode='row'
         onRowEditStop={handleRowEditStop}
         processRowUpdate={(newRow, oldRow) => handleProductUpdate(newRow, oldRow)}

@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import useAuth from './hooks/useAuth';
 import Home from './pages/Home';
 import { Navigate, Route, BrowserRouter as Router, Routes, Outlet } from 'react-router-dom';
+import Company from './pages/Company';
+import Inventory from './pages/Inventory';
 import Products from './pages/Products';
 import Template from './ui/Template';
 
@@ -27,7 +29,9 @@ const AppRouter = () => {
 
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="/dashboard" element={<Home />} />
+          <Route path="/company" element={<Company />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/inventory" element={<Inventory />} />
         </Route>
 
         {/* Fallback Route */}
